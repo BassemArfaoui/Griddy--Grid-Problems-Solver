@@ -1,6 +1,6 @@
 import React  from "react";
 import './styles/Header.css'
-// import { Link , useLocation } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 // import {useNavigate} from 'react-router-dom'
 // import CustomTooltip from "../tools/CustomTooltip";
 // import HomeIcon from '@mui/icons-material/Home';
@@ -74,7 +74,9 @@ function Header()
 
 return (
         <header className=" border-bottom border-3 d-flex align-items-center w-100 position-relative">
-                <h1 className="ms-4  fw-bolder position-absolute text-success" style={{fontSize:'48px'}}>OptiSolve</h1>
+               
+                  <h1 className="ms-4  fw-bolder position-absolute text-success" style={{fontSize:'48px'}}> <Link to='/' className="m-0 text-decoration-none text-success">OptiSolve</Link></h1>
+                
                 {/* <div className="d-flex gap-4 me-5 align-items-center position-absolute end-0">
                     <CustomTooltip title='Search'>
                       <h4><SearchIcon className="mt-1 text-success" style={{fontSize:'47px'}}/></h4>
