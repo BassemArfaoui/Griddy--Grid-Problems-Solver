@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-GRID_SIZE = 10  # 10x10 grid
+GRID_SIZE = 10 
 
 class BlockedSquares(BaseModel):
     blocked: List[Tuple[int, int]]
