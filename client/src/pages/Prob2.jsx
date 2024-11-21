@@ -1,8 +1,9 @@
 import React from 'react'
+import '../css/Prob2.css'
 
 function Prob2() {
   return (
-    <div>Prob2</div>
+    <div className='contain fs-1 fw-bold'>Prob2</div>
   )
 }
 

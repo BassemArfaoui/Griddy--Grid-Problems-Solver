@@ -5,6 +5,9 @@ import CustomToaster from "../components/tools/CustomToaster";
 import Spinner from "../components/tools/Spinner";
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Correct 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import ProblemButton from "../components/parts/ProblemButton";
+import ExplainButton from "../components/parts/ExplainButton";
+
 
 // Lazy-load the components
 const MainPage = lazy(() => import("../pages/MainPage"));
@@ -18,10 +21,11 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
       <Router>
         <CustomToaster />
         <Header />
+        <ProblemButton />
+        <ExplainButton />
         <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />

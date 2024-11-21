@@ -1,0 +1,18 @@
+.notification-side
+{
+    border-left: 4px solid rgb(28, 27, 27);
+    height: 10vh;
+    overflow-y: auto;
+}
+
+.problem
+{
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 20px;
+}
+
+.problem:hover
+{
+   background-color: rgba(172, 255, 47, 0.441);
+}
