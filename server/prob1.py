@@ -15,13 +15,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-GRID_SIZE = 10 
 
 class BlockedSquares(BaseModel):
     blocked: List[Tuple[int, int]]
+    n : int
 
 
-# Function to calculate the optimal path
 def solve_shortest_path(n: int, blocked: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     m = gp.Model("shortest_path")
     m.setParam("OutputFlag", 0)
@@ -86,7 +85,7 @@ async def options_optimal_path():
 @app.post("/optimal_path")
 async def get_optimal_path(data: BlockedSquares):
     blocked = [(x[0], x[1]) for x in data.blocked]
-    path = solve_shortest_path(GRID_SIZE, blocked)
+    path = solve_shortest_path(data.n, blocked)
     if path:
         return {"path": path}
     else:
@@ -95,4 +94,4 @@ async def get_optimal_path(data: BlockedSquares):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)

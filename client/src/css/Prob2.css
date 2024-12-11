@@ -1,7 +1,69 @@
-.contain
-{
-    height: 85vh;
+:root {
+    --cell-size: 13px;
+    --axis-color :#f0f0f0 ;
+  }
+  
+
+
+.grid-selector {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-}
+    margin-top: 20px;
+  }
+  
+  .grid {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 5px;
+  }
+  
+  .grid-row {
+    display: flex;
+  }
+  
+  .grid-cell {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+
+  .axis
+  {
+    background-color: var(--axis-color);
+  }
+  
+  .grid-cell.selected {
+    background-color: #020202e0;
+  }
+  
+  .grid-cell.axis-label {
+    width: var(--cell-size);
+    height: var(--cell-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: bold;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+  }
+  
+  .submit-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  

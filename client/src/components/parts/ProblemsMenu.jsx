@@ -1,6 +1,6 @@
 import React  from 'react'
 import RouteIcon from '@mui/icons-material/Route';
-import LooksTwoIcon from '@mui/icons-material/LooksTwo';
+import { PiChartScatterBold } from "react-icons/pi";
 import AppsIcon from '@mui/icons-material/Apps';
 import './styles/Menu.css'
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ function ProblemsMenu(props) {
   function openProb2()
   {
     props.closeDrawer();
-    navigate('/prob2')
+    navigate('/function-approximation')
   }
 
   function openProb3()
@@ -39,7 +39,7 @@ function ProblemsMenu(props) {
             <RouteIcon />
           </div>      
           <div className="w-100">
-            <p className="mb-0 fw-bold fs-2 ms-3 text-dark" onClick={openShortestPath}>
+            <p className="mb-0 fw-bold fs-4 ms-3 text-dark" onClick={openShortestPath}>
               Shortest Path
             </p>
           </div>
@@ -48,14 +48,14 @@ function ProblemsMenu(props) {
 
          <div className="problem d-flex align-items-center justify-content-center gap-3 mb-2">
           <div
-            className="noti-btn bg-primary text-light rounded-circle d-flex align-items-center justify-content-center px-2"
+            className="fs-1 noti-btn bg-primary text-light rounded-circle d-flex align-items-center justify-content-center px-2"
             style={{ width: "40px", height: "40px" }}
           >
-            <LooksTwoIcon/>
+            <PiChartScatterBold />
           </div>      
           <div className="w-100">
-            <p className="mb-0 fw-bold fs-2 ms-3 text-dark" onClick={openProb2}>
-              Problem 2
+            <p className="mb-0 fw-bold fs-4 ms-3 text-dark" style={{whiteSpace:'nowrap' , overflow : 'hidden' , textOverflow : 'ellipsis'}} onClick={openProb2}>
+              Function Approxi...
             </p>
           </div>
         </div> 
@@ -68,7 +68,7 @@ function ProblemsMenu(props) {
             <AppsIcon />
           </div>      
           <div className="w-100">
-            <p className="mb-0 fw-bold fs-2 ms-3 text-dark" onClick={openProb3}>
+            <p className="mb-0 fw-bold fs-4 ms-3 text-dark" onClick={openProb3}>
               Problem 3
             </p>
           </div>

@@ -55,7 +55,7 @@ export default function ProblemButton() {
       <Drawer anchor="left" open={open} onClose={toggleDrawer(false)}>
         <div className="d-flex flex-column h-100 p-3" style={{ width: '400px' }}>
           <div className="d-flex justify-content-between align-items-center border-bottom pb-3">
-            <h2 className='fw-bold text-success fs-1'>Problems</h2>
+            <h2 className='fw-bold text-success fs-2'>Problems</h2>
             <IconButton onClick={toggleDrawer(false)} aria-label="Close">
               <CloseIcon className='text-black fs-2'/>
             </IconButton>

@@ -8,6 +8,7 @@ import { Link , useLocation } from "react-router-dom";
 // import SearchIcon from '@mui/icons-material/Search';
 // import LogoutIcon from '@mui/icons-material/Logout';
 // import AddIcon from '@mui/icons-material/Add';
+import logo from './logo.png'
 
 
 
@@ -75,7 +76,9 @@ function Header()
 return (
         <header className=" border-bottom border-3 d-flex align-items-center w-100 position-relative">
                
-                  <h1 className="ms-4  fw-bolder position-absolute text-success" style={{fontSize:'39px'}}> <Link to='/' className="m-0 text-decoration-none text-success">OptiSolve</Link></h1>
+                  <h1 className="ms-0 my-0 fw-bolder position-absolute text-success" style={{fontSize:'39px'}}> <Link to='/' className="m-0 text-decoration-none text-success m-0">
+                    <img src={logo} alt="logo" style={{height:'55px'}}/>
+                  </Link></h1>
                 
                 {/* <div className="d-flex gap-4 me-5 align-items-center position-absolute end-0">
                     <CustomTooltip title='Search'>

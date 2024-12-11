@@ -1,0 +1,101 @@
+/* General Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Trigger Button */
+  .trigger-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .trigger-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Drawer Overlay */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+  }
+  
+  /* Drawer Content */
+  .drawer-content {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 9999;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .drawer-content[data-state="open"] {
+    transform: translateX(0);
+  }
+  
+  /* Title and Description */
+  .drawer-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .drawer-description {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+  
+  /* Options List */
+  .drawer-options {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .drawer-options li {
+    margin-bottom: 15px;
+  }
+  
+  .drawer-options a {
+    color: #4caf50;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+  
+  .drawer-options a:hover {
+    color: #45a049;
+  }
+  
+  /* Close Button */
+  .close-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+  }
+  
+  .close-button:hover {
+    background-color: #e53935;
+  }
+  

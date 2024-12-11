@@ -10,7 +10,7 @@ function CustomToaster() {
     const toastOptions=
     {
       duration: 2100,
-      position: 'bottom-center',
+      position: 'top-right',
       icon: <ErrorIcon style={{fontSize:'40px'}}/>,
       style: {
         background: 'rgb(244, 67, 54)',

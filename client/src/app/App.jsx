@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'; // Cor
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import ProblemButton from "../components/parts/ProblemButton";
 import ExplainButton from "../components/parts/ExplainButton";
+import MyDrawer from "../components/tools/MyDrawer";
 
 
 // Lazy-load the components
@@ -22,18 +23,22 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
+      
         <CustomToaster />
         <Header />
         <ProblemButton />
         <ExplainButton />
+
         <Suspense fallback={<Spinner />}>
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/shortest-path" element={<ShortestPath />} />
-            <Route path="/prob2" element={<Prob2 />} />
+            <Route path="/function-approximation" element={<Prob2 />} />
             <Route path="/prob3" element={<Prob3 />} />
+            <Route path="/test" element={<MyDrawer />} />
           </Routes>
         </Suspense>
+
       </Router>
     </QueryClientProvider>
   );
