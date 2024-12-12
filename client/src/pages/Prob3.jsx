@@ -1,145 +1,232 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
+import React, { useState } from "react";
+import Select from "react-select";
+import "../css/ShortestPage.css";
+import "../css/Prob3.css";
+import SpinnerSpan from "../components/tools/SpinnerSpan";
+import { notify } from "../components/tools/CustomToaster";
 
-const RouterPlacementForm = () => {
-  const [gridSize, setGridSize] = useState(""); // No initial value for grid size
-  const [routerRanges, setRouterRanges] = useState(""); // No initial value for router ranges
-  const [walls, setWalls] = useState([]);
-  const [grid, setGrid] = useState([]);
-  const [open, setOpen] = useState(false); // To control modal visibility
-  const [error, setError] = useState(""); // To handle errors
-  const [message, setMessage] = useState("Please fill the form to proceed.");
+const NetworkCoverageProblem = () => {
+  const gurobiLim = 18;
+  const [n, setN] = useState(10); 
+  const [networkGrid, setNetworkGrid] = useState(
+    Array.from({ length: n }, () => Array(n).fill("-"))
+  ); 
+  const [numRange5, setNumRange5] = useState(0); 
+  const [numRange3, setNumRange3] = useState(0); 
+  const [blockedCells, setBlockedCells] = useState([]); 
+  const [loading, setLoading] = useState(false); 
 
-  // Automatically calculate the number of routers based on the routerRanges array length
-  const numRouters = routerRanges ? routerRanges.split(",").length : 0;
-
-  // Generate grid based on gridSize
-  const generateGrid = () => {
-    const newGrid = Array(parseInt(gridSize, 10)).fill(null).map(() => Array(parseInt(gridSize, 10)).fill(""));
-    setGrid(newGrid);
+  const gridStyle = {
+    gridTemplateColumns: `repeat(${n}, 1fr)`,
+    gridTemplateRows: `repeat(${n}, 1fr)`,
   };
 
-  // Effect hook to regenerate the grid whenever the gridSize changes
-  useEffect(() => {
-    if (gridSize) {
-      generateGrid();
-    }
-  }, [gridSize]);
-
-  // Handle grid size change
-  const handleGridSizeChange = (e) => {
-    setGridSize(e.target.value);
+  const selectStyles = {
+    control: (provided) => ({
+      ...provided,
+      borderColor: "rgb(202, 202, 202)",
+      borderWidth: "2pt",
+      borderRadius: "12px",
+      padding: "3px",
+      width: "300px",
+      outline: "none",
+      boxShadow: "none",
+      "&:hover": {
+        borderColor: "rgb(25, 135, 84)",
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      backgroundColor: "#ffffff",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isSelected
+        ? "rgb(25, 135, 84)"
+        : state.isFocused
+        ? "rgba(172, 255, 47, 0.441)"
+        : "#fff",
+      color: state.isSelected ? "#fff" : "#000",
+      cursor: state.isSelected ? "not-allowed" : "pointer",
+      padding: "10px",
+      fontSize: "17px",
+      fontWeight: "bold",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#333",
+      fontSize: "17px",
+      fontWeight: "bold",
+    }),
   };
 
-  // Handle router range input
-  const handleRouterRangeChange = (e) => {
-    const value = e.target.value;
-    setRouterRanges(value);
+  const options = Array.from({ length: gurobiLim - 1 }, (_, i) => {
+    const value = i + 2;
+    return { value, label: `${value} x ${value}` };
+  });
 
-    // Validate if the values are numbers
-    const parsedRanges = value.split(",").map(range => parseInt(range.trim(), 10));
-    if (parsedRanges.some(isNaN)) {
-      setError("Please enter valid numbers for the router ranges.");
-    } else {
-      setError("");
-    }
+  const selectChanged = (selectedOption) => {
+    const newSize = selectedOption.value;
+    setLoading(true);
+    setN(newSize);
+    const newGrid = Array.from({ length: newSize }, () => Array(newSize).fill("-"));
+    setNetworkGrid(newGrid);
+    setBlockedCells([]); 
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 300);
   };
 
-  // Add wall at a specific grid position
-  const handleAddWall = (i, j) => {
-    setWalls([...walls, [i, j]]);
-    console.log("Wall added at:", i, j);
-  };
-
-  // Handle form submission and send to API
-  const handleSubmit = () => {
-    // Placeholder for API call logic (empty for now)
-    console.log("Form submitted with grid size:", gridSize);
-    console.log("Router ranges:", routerRanges);
-    console.log("Walls:", walls);
-    setOpen(false); // Close modal after form submission
-  };
-
-  // Render the grid
-  const renderGrid = () => {
-    return (
-      <div style={{ display: 'grid', gridTemplateColumns: `repeat(${gridSize}, 25px)` , border:'2px solid black' }}>
-        {grid.map((row, i) =>
-          row.map((cell, j) => (
-            <div
-              key={`${i}-${j}`}
-              style={{
-                width: '25px',
-                height: '25px',
-                border: '1px solid black',
-                textAlign: 'center',
-                lineHeight: '25px',
-                backgroundColor: walls.some(wall => wall[0] === i && wall[1] === j) ? 'black' : 'white',
-                cursor: 'pointer'
-              }}
-              onClick={() => handleAddWall(i, j)}
-            >
-              {cell}
-            </div>
-          ))
-        )}
-      </div>
+  const toggleWall = (row, col) => {
+    const newGrid = networkGrid.map((r, rowIndex) =>
+      rowIndex === row
+        ? r.map((cell, colIndex) => (colIndex === col ? "W" : cell))
+        : r
     );
+    setNetworkGrid(newGrid);
+
+    const newBlockedCells = [...blockedCells];
+    if (newGrid[row][col] === "W") {
+      newBlockedCells.push([row, col]);
+    } else {
+      const index = newBlockedCells.findIndex(
+        (cell) => cell[0] === row && cell[1] === col
+      );
+      if (index > -1) {
+        newBlockedCells.splice(index, 1);
+      }
+    }
+    setBlockedCells(newBlockedCells);
+  };
+
+  const sendNetworkDataToAPI = async () => {
+    const routerRanges = [
+      ...Array(numRange5).fill(5),
+      ...Array(numRange3).fill(3),
+    ];
+
+    const requestData = {
+      grid_size: n,
+      router_ranges: routerRanges,
+      walls: blockedCells,
+      num_routers: routerRanges.length,
+    };
+
+    console.log("Sending data to API:", requestData);
+
+    try {
+      setLoading(true);
+      
+      const response = await fetch("http://localhost:7000/router-placement", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log("Response received:", data);
+        setNetworkGrid(data.grid);
+        console.log("Total Coverage:", data.total_coverage);
+      } else {
+        console.error("Error from API:", data);
+        notify("An error occurred while fetching the data.", "error");
+      }
+    } catch (error) {
+      console.error("Request failed:", error);
+      notify("Failed to connect to the server.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderCell = (cell) => {
+    if (cell === "R") {
+      return { backgroundColor: "blue" };
+    }
+    if (cell === "C") {
+      return { backgroundColor: "green" };
+    }
+    if (cell === "W") {
+      return { backgroundColor: "black" };
+    }
+    return { backgroundColor: "lightgray" };
   };
 
   return (
-    <div className='d-flex justify-content-center flex-column'>
-      {/* Button to open the form modal */}
-      <div className='d-flex justify-content-center mt-3'>
-        <Button variant="contained" color="primary" onClick={() => setOpen(true)}>
-          Open Form
-        </Button>
-      </div>
-
-      {/* Render grid */}
-      <div style={{ marginTop: '20px' }}>
-        <div className='d-flex justify-content-center mb-5 mt-0'>{gridSize && renderGrid()}</div> 
-      </div>
-
-      {/* Modal for the form */}
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Fill the Form</DialogTitle>
-        <DialogContent>
-          <Typography variant="body1">{message}</Typography>
-
-          <TextField
-            label="Grid Size"
-            type="number"
-            value={gridSize}
-            onChange={handleGridSizeChange}
-            fullWidth
-            margin="normal"
-            placeholder="Enter grid size"
+    <div className="cont-container">
+      <div className="main d-flex flex-row gap-5 justify-content-center">
+        <div className="d-flex align-items-center flex-column gap-3" style={{ width: "400px" }}>
+          <Select
+            options={options}
+            value={options.find((option) => option.value === n)}
+            placeholder="Select Grid Size"
+            onChange={selectChanged}
+            isOptionDisabled={(option) => option.value === n}
+            styles={selectStyles}
           />
+          <div className="d-flex flex-column align-items-center gap-3 mt-3">
+            <div className="text-start ms-1 fw-bold text-secondary mt-0 ms-2" style={{width:'300px'}}>Number of 5 GHz Routers :</div>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Number of Range 5 Routers"
+              value={numRange5}
+              onChange={(e) => setNumRange5(Number(e.target.value))}
+              style={{ width: "300px" }}
+            />
 
-          <TextField
-            label="Router Ranges (comma-separated)"
-            value={routerRanges}
-            onChange={handleRouterRangeChange}
-            fullWidth
-            margin="normal"
-            error={!!error}
-            helperText={error}
-            placeholder="Enter router ranges (e.g., 5, 3, 5)"
-          />
-        </DialogContent>
 
-        <DialogActions>
-          <Button onClick={() => setOpen(false)} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
+            <div className="text-start ms-1 fw-bold text-secondary mt-3 ms-2" style={{width:'300px'}}>Number of 2.4 GHz Routers :</div>
+            <input
+              type="number"
+              className="form-control"
+              placeholder="Number of Range 3 Routers"
+              value={numRange3}
+              onChange={(e) => setNumRange3(Number(e.target.value))}
+              style={{ width: "300px" }}
+            />
+          </div>
+          <div className="d-flex justify-content-center mt-4">
+            <button
+              onClick={sendNetworkDataToAPI}
+              className="pol-btn btn bg-success fs-6 fw-bold rounded-4 flex-grow-1"
+            >
+              Place Routers
+            </button>
+          </div>
+        </div>
+
+        <div className="grid-wrapper d-flex justify-content-center align-items-center mt-1">
+          {loading ? (
+            <div
+              className="loading-message w-100 h-100 d-flex justify-content-center align-items-center"
+              style={{ backgroundColor: "rgba(211,211,211,0.7)" }}
+            >
+              <SpinnerSpan />
+            </div>
+          ) : (
+            <div className="grid-container" style={gridStyle}>
+              {networkGrid.map((row, rowIndex) =>
+                row.map((cell, colIndex) => (
+                  <div
+                    key={`${rowIndex}-${colIndex}`}
+                    className="grid-item"
+                    style={renderCell(cell)}
+                    onClick={() => toggleWall(rowIndex, colIndex)}
+                  ></div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
 
-export default RouterPlacementForm;
+export default NetworkCoverageProblem;

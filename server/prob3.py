@@ -79,7 +79,8 @@ def place_routers(grid_size, router_ranges, walls, num_routers):
 async def router_placement(request: RouterPlacementRequest):
     grid_size = request.grid_size
     router_ranges = request.router_ranges
-    walls = request.walls
+    walls = request.walls  
+    print(walls)
     num_routers = request.num_routers
 
     grid_result, total_coverage = place_routers(grid_size, router_ranges, walls, num_routers)

@@ -81,6 +81,13 @@
     border: 2pt solid black;
   }
 
+    
+  .pol-btn::after
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
+
 
   .equation
   {

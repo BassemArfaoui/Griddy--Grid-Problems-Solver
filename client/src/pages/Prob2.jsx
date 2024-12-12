@@ -89,17 +89,17 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
       return;
     }
   
-    const maxDistance = 8; 
-    for (let i = 1; i < selectedCoordinates.length; i++) {
-      const [x1, y1] = selectedCoordinates[i - 1];
-      const [x2, y2] = selectedCoordinates[i];
-      const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-  
-      if (distance > maxDistance) {
-        notify('Some points are too far apart!');
-        return;
+      const maxDistance = 8; 
+      for (let i = 1; i < selectedCoordinates.length; i++) {
+        const [x1, y1] = selectedCoordinates[i - 1];
+        const [x2, y2] = selectedCoordinates[i];
+        const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    
+        if (distance > maxDistance) {
+          notify('Some points are too far apart!');
+          return;
+        }
       }
-    }
   
     const formattedData = selectedCoordinates.map((coord) => [coord[0], coord[1]]);
     try {
@@ -206,7 +206,7 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
       >
         <span>
           <button
-            className=" pol-btn btn bg-success rounded-circle p-2"
+            className="pol-btn btn bg-success rounded-circle p-0 flex-grow-0"
             onClick={resetGrid}
           >
             <ReplayIcon />
@@ -218,7 +218,7 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
           variant="contained"
           color="primary"
           onClick={sendSelectedPoints}
-          className="pol-btn btn bg-success fs-6 fw-bold rounded-4"
+          className="pol-btn btn bg-success fs-6 fw-bold rounded-4 flex-grow-1"
         >
           Generate Polynomial
         </button>

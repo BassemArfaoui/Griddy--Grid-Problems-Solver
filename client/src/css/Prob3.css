@@ -3,5 +3,45 @@
     height: 85vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    overflow: auto;
 }
+
+.form-control
+{
+    padding: 10px;
+    font-weight:bold;
+    border-width: 3px;
+    border-radius: 12px;
+    outline: none !important;
+}
+
+.form-control:focus
+{
+    outline: none !important;
+}
+
+.form-control:active
+{
+    outline: none !important;
+}
+
+
+.pol-btn
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
+
+  
+  .pol-btn:hover
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
+
+    
+  .pol-btn::after
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
