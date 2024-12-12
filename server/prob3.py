@@ -72,9 +72,19 @@ def place_routers(grid_size, router_ranges, walls, num_routers):
 
 
 # Example usage
-grid_size = 10
-router_ranges = [3, 1, 3]  # Ranges for each router
-walls = [(3, 3), (3, 4), (4, 3), (6, 4), (7, 4), (8, 4), (9, 4)]
+grid_size = 22
+# max range of grid is 22 sinon gurobi ma yekhdemch w yotleb license
+
+"""
+ tnajem thot par defaut  2.4G = 5 carreaux ycouvri 
+  w  5G = 3 carreaux ycouvri w router ranges houma li 
+    menhom yethseb nb routeur 
+
+ tnajem tbadel hasilou ...
+"""
+router_ranges = [5, 3, 5]  # Ranges for each router
+walls = [(3, 3), (3, 4), (4, 3), (6, 4), (7, 4), (8, 4), (9, 4),
+         (11, 10), (11, 10), (12, 10), (13, 10), (14, 10), (15, 10), (16, 10)]
 num_routers = len(router_ranges)
 
 place_routers(grid_size, router_ranges, walls, num_routers)
