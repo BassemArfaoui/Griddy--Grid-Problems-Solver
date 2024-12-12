@@ -78,7 +78,7 @@ return (
                
                   <h1 className="ms-0 my-0 fw-bolder position-absolute text-success d-flex" style={{fontSize:'39px'}}> <Link to='/' className="m-0 gap-0 text-decoration-none text-success m-0 d-flex align-items-center">
                     <img src={logo} alt="logo" style={{height:'70px'}}/>
-                    <h3 className="fw-bold fs-1 ms-1">Griddy</h3>
+                    <h3 className="fw-bold fs-1 ms-1 roboto-bold m-0">Griddy</h3>
                   </Link>
                   </h1>
                 

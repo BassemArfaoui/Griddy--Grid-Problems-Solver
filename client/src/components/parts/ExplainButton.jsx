@@ -61,7 +61,7 @@ export default function ExplainButton() {
                         location.pathname === '/function-approximation' && <span>Polynomial Approximation</span>
                     }
                     {
-                        location.pathname === '/prob3' && <span>problem 3 <br /> <br/>description.</span>
+                        location.pathname === '/network-coverage' && <span>Network Coverage</span>
                     }
                 </h2>
                 <IconButton onClick={() => toggleModal(false)} aria-label="Close">
@@ -78,7 +78,7 @@ export default function ExplainButton() {
                         location.pathname === '/function-approximation' && <span>Some Description</span>
                     }
                     {
-                        location.pathname === '/prob3' && <span>problem 3 <br /> <br/>description.</span>
+                        location.pathname === '/network-coverage' && <span>problem 3 description.</span>
                     }
                 </p>
               </div>

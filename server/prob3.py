@@ -1,25 +1,35 @@
 import gurobipy as gp
 from gurobipy import GRB
 import numpy as np
+from fastapi import FastAPI
+from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
 
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://localhost:3001"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+class RouterPlacementRequest(BaseModel):
+    grid_size: int
+    router_ranges: list
+    walls: list
+    num_routers: int
 
 def place_routers(grid_size, router_ranges, walls, num_routers):
-    # Create model
     model = gp.Model("Router Placement")
 
-    # Variables
-    placement = model.addVars(grid_size, grid_size,
-                              num_routers, vtype=GRB.BINARY, name="placement")
-    coverage = model.addVars(grid_size, grid_size,
-                             vtype=GRB.BINARY, name="coverage")
+    placement = model.addVars(grid_size, grid_size, num_routers, vtype=GRB.BINARY, name="placement")
+    coverage = model.addVars(grid_size, grid_size, vtype=GRB.BINARY, name="coverage")
 
-    # Constraints
-    # Each router can be placed at only one location
     for r in range(num_routers):
-        model.addConstr(gp.quicksum(placement[i, j, r] for i in range(
-            grid_size) for j in range(grid_size)) == 1)
+        model.addConstr(gp.quicksum(placement[i, j, r] for i in range(grid_size) for j in range(grid_size)) == 1)
 
-    # Coverage constraints
     for i in range(grid_size):
         for j in range(grid_size):
             if (i, j) not in walls:
@@ -33,14 +43,13 @@ def place_routers(grid_size, router_ranges, walls, num_routers):
                     )
                 )
 
-    # Objective: Maximize covered cells
-    model.setObjective(gp.quicksum(coverage[i, j] for i in range(
-        grid_size) for j in range(grid_size)), GRB.MAXIMIZE)
+    model.setObjective(gp.quicksum(coverage[i, j] for i in range(grid_size) for j in range(grid_size)), GRB.MAXIMIZE)
 
-    # Optimize
     model.optimize()
 
-    # Extract results
+    grid_result = []
+    total_coverage = 0
+
     if model.status == GRB.OPTIMAL:
         grid = np.full((grid_size, grid_size), "-")
         for (i, j) in walls:
@@ -59,32 +68,24 @@ def place_routers(grid_size, router_ranges, walls, num_routers):
                 if coverage[i, j].X > 0.5 and grid[i, j] == "-":
                     grid[i, j] = "C"
 
-        print("Optimal Router Placement:")
         for row in grid:
-            print(" ".join(row))
+            grid_result.append(list(row))
 
-        total_coverage = sum(coverage[i, j].X for i in range(
-            grid_size) for j in range(grid_size))
-        print(f"Total Covered Cells: {int(total_coverage)}")
+        total_coverage = sum(coverage[i, j].X for i in range(grid_size) for j in range(grid_size))
 
-    else:
-        print("No optimal solution found.")
+    return grid_result, total_coverage
 
+@app.post("/router-placement")
+async def router_placement(request: RouterPlacementRequest):
+    grid_size = request.grid_size
+    router_ranges = request.router_ranges
+    walls = request.walls
+    num_routers = request.num_routers
 
-# Example usage
-grid_size = 22
-# max range of grid is 22 sinon gurobi ma yekhdemch w yotleb license
+    grid_result, total_coverage = place_routers(grid_size, router_ranges, walls, num_routers)
 
-"""
- tnajem thot par defaut  2.4G = 5 carreaux ycouvri 
-  w  5G = 3 carreaux ycouvri w router ranges houma li 
-    menhom yethseb nb routeur 
+    return {"status": "Router placement completed.", "grid": grid_result, "total_coverage": total_coverage}
 
- tnajem tbadel hasilou ...
-"""
-router_ranges = [5, 3, 5]  # Ranges for each router
-walls = [(3, 3), (3, 4), (4, 3), (6, 4), (7, 4), (8, 4), (9, 4),
-         (11, 10), (11, 10), (12, 10), (13, 10), (14, 10), (15, 10), (16, 10)]
-num_routers = len(router_ranges)
-
-place_routers(grid_size, router_ranges, walls, num_routers)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=7000)

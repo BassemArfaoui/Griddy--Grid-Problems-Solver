@@ -1,8 +1,10 @@
 import React  from 'react'
 import RouteIcon from '@mui/icons-material/Route';
 import { PiChartScatterBold } from "react-icons/pi";
-import PublicIcon from '@mui/icons-material/Public';import './styles/Menu.css'
+import WifiIcon from '@mui/icons-material/Wifi';
+import './styles/Menu.css'
 import { useNavigate } from 'react-router-dom';
+
 
 
 function ProblemsMenu(props) {
@@ -25,7 +27,7 @@ function ProblemsMenu(props) {
   function openProb3()
   {
     props.closeDrawer();
-    navigate('/prob3')
+    navigate('/network-coverage')
   }
     
   return (
@@ -64,11 +66,11 @@ function ProblemsMenu(props) {
             className="noti-btn bg-primary text-light rounded-circle d-flex align-items-center justify-content-center px-2"
             style={{ width: "40px", height: "40px" }}
           >
-            <PublicIcon />
+            <WifiIcon />
           </div>      
           <div className="w-100">
             <p className="mb-0 fw-bold fs-4 ms-3 text-dark" onClick={openProb3}>
-              Network Range
+              Network Coverage
             </p>
           </div>
         </div> 

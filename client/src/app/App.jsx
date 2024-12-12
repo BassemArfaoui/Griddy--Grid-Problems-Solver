@@ -34,7 +34,7 @@ function App() {
             <Route path="/" element={<MainPage />} />
             <Route path="/shortest-path" element={<ShortestPath />} />
             <Route path="/function-approximation" element={<Prob2 />} />
-            <Route path="/prob3" element={<Prob3 />} />
+            <Route path="/network-coverage" element={<Prob3 />} />
             <Route path="/test" element={<MyDrawer />} />
           </Routes>
         </Suspense>

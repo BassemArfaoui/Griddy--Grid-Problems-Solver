@@ -83,18 +83,31 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
       notify('Click on the grid to select points !');
       return;
     }
-
-    if (selectedCoordinates.length <5) {
+  
+    if (selectedCoordinates.length < 5) {
       notify('Please select at least 5 points');
       return;
     }
+  
+    const maxDistance = 8; 
+    for (let i = 1; i < selectedCoordinates.length; i++) {
+      const [x1, y1] = selectedCoordinates[i - 1];
+      const [x2, y2] = selectedCoordinates[i];
+      const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  
+      if (distance > maxDistance) {
+        notify('Some points are too far apart!');
+        return;
+      }
+    }
+  
     const formattedData = selectedCoordinates.map((coord) => [coord[0], coord[1]]);
     try {
       const response = await axios.post('http://localhost:9000/polynomial', {
         data_points: formattedData,
         degree: degree,
       });
-
+  
       console.log('Polynomial response:', response.data);
       setPolynomialData(response.data);
       setOpenModal(true);
@@ -103,6 +116,7 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
       alert('An error occurred while sending points to the server.');
     }
   };
+  
 
   const handleCloseModal = () => {
     setOpenModal(false);
@@ -229,8 +243,8 @@ const GridSelector = ({ rows = 25, columns = 71 }) => {
           }}
         >
           <div className="d-flex justify-content-center">
-            <span className="result-title fs-4 fw-bold  text-center px-3 py-1 rounded-4 mb-3">
-              Polynomial Result
+            <span className="result-title fs-4 fw-bold  text-center px-3 py-1 rounded-4 mb-3 text-success">
+              Polynomial Result :
             </span>
           </div>
 
