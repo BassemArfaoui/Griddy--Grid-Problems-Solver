@@ -1,8 +1,7 @@
 import React  from 'react'
 import RouteIcon from '@mui/icons-material/Route';
 import { PiChartScatterBold } from "react-icons/pi";
-import AppsIcon from '@mui/icons-material/Apps';
-import './styles/Menu.css'
+import PublicIcon from '@mui/icons-material/Public';import './styles/Menu.css'
 import { useNavigate } from 'react-router-dom';
 
 
@@ -55,7 +54,7 @@ function ProblemsMenu(props) {
           </div>      
           <div className="w-100">
             <p className="mb-0 fw-bold fs-4 ms-3 text-dark" style={{whiteSpace:'nowrap' , overflow : 'hidden' , textOverflow : 'ellipsis'}} onClick={openProb2}>
-              Function Approxi...
+              Polynomial Approxi...
             </p>
           </div>
         </div> 
@@ -65,11 +64,11 @@ function ProblemsMenu(props) {
             className="noti-btn bg-primary text-light rounded-circle d-flex align-items-center justify-content-center px-2"
             style={{ width: "40px", height: "40px" }}
           >
-            <AppsIcon />
+            <PublicIcon />
           </div>      
           <div className="w-100">
             <p className="mb-0 fw-bold fs-4 ms-3 text-dark" onClick={openProb3}>
-              Problem 3
+              Network Range
             </p>
           </div>
         </div> 

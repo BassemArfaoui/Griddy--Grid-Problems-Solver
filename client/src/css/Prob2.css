@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 15px;
   }
   
   .grid {
@@ -67,3 +67,22 @@
     background-color: #0056b3;
   }
   
+
+  .pol-btn
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
+
+  
+  .pol-btn:hover
+  {
+    padding: 8px 10px !important;
+    border: 2pt solid black;
+  }
+
+
+  .equation
+  {
+    border: 2px solid lightgray;
+  }

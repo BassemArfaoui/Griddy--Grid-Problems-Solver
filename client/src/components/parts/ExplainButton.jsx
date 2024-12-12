@@ -49,12 +49,20 @@ export default function ExplainButton() {
           >
             <Box
               className="position-absolute top-50 start-50 translate-middle p-4 bg-white rounded"
-              style={{ width: '40%', border: '2px solid #dcdcdc' }}
+              style={{ width: '60%', border: '2px solid #dcdcdc' }}
             >
               {/* Header */}
               <div className="d-flex justify-content-between align-items-center border-bottom pb-3">
-                <h2 id="modal-title" className="fw-bold text-success fs-1">
-                  Shortest Path
+                <h2 id="modal-title" className="fw-bold text-success fs-4 ms-3">
+                    {
+                        location.pathname === '/shortest-path' && <span>Shortest Path</span>
+                    }
+                    {
+                        location.pathname === '/function-approximation' && <span>Polynomial Approximation</span>
+                    }
+                    {
+                        location.pathname === '/prob3' && <span>problem 3 <br /> <br/>description.</span>
+                    }
                 </h2>
                 <IconButton onClick={() => toggleModal(false)} aria-label="Close">
                   <CloseIcon className="text-black fs-2" />
@@ -62,12 +70,12 @@ export default function ExplainButton() {
               </div>
               {/* Content */}
               <div id="modal-description" className="mt-3">
-                <p className="text-dark fs-4 fw-bold p-3">
+                <p className="text-dark fs-5  p-3">
                     {
                         location.pathname === '/shortest-path' && <span>Watch as the shortest path is calculated and displayed on the grid! <br /> <br/> Block squares to create obstacles, and see how the path dynamically adjusts to avoid them.</span>
                     }
                     {
-                        location.pathname === '/prob2' && <span>problem 2 <br /> <br/>description.</span>
+                        location.pathname === '/function-approximation' && <span>Some Description</span>
                     }
                     {
                         location.pathname === '/prob3' && <span>problem 3 <br /> <br/>description.</span>

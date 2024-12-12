@@ -76,9 +76,11 @@ function Header()
 return (
         <header className=" border-bottom border-3 d-flex align-items-center w-100 position-relative">
                
-                  <h1 className="ms-0 my-0 fw-bolder position-absolute text-success" style={{fontSize:'39px'}}> <Link to='/' className="m-0 text-decoration-none text-success m-0">
-                    <img src={logo} alt="logo" style={{height:'55px'}}/>
-                  </Link></h1>
+                  <h1 className="ms-0 my-0 fw-bolder position-absolute text-success d-flex" style={{fontSize:'39px'}}> <Link to='/' className="m-0 gap-0 text-decoration-none text-success m-0 d-flex align-items-center">
+                    <img src={logo} alt="logo" style={{height:'70px'}}/>
+                    <h3 className="fw-bold fs-1 ms-1">Griddy</h3>
+                  </Link>
+                  </h1>
                 
                 {/* <div className="d-flex gap-4 me-5 align-items-center position-absolute end-0">
                     <CustomTooltip title='Search'>
