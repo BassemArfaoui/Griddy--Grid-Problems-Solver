@@ -4,6 +4,8 @@ import "../css/ShortestPage.css";
 import "../css/Prob3.css";
 import SpinnerSpan from "../components/tools/SpinnerSpan";
 import { notify } from "../components/tools/CustomToaster";
+import ReplayIcon from "@mui/icons-material/Replay";
+
 
 const NetworkCoverageProblem = () => {
   const gurobiLim = 18;
@@ -81,43 +83,63 @@ const NetworkCoverageProblem = () => {
   const toggleWall = (row, col) => {
     const newGrid = networkGrid.map((r, rowIndex) =>
       rowIndex === row
-        ? r.map((cell, colIndex) => (colIndex === col ? "W" : cell))
+        ? r.map((cell, colIndex) => (colIndex === col ? (cell === "W" ? "-" : "W") : cell))
         : r
     );
     setNetworkGrid(newGrid);
-
+  
+    // Update the list of blocked cells (walls)
     const newBlockedCells = [...blockedCells];
     if (newGrid[row][col] === "W") {
-      newBlockedCells.push([row, col]);
+      newBlockedCells.push([row, col]); // Add wall to blocked cells
     } else {
       const index = newBlockedCells.findIndex(
         (cell) => cell[0] === row && cell[1] === col
       );
       if (index > -1) {
-        newBlockedCells.splice(index, 1);
+        newBlockedCells.splice(index, 1); // Remove wall from blocked cells
       }
     }
     setBlockedCells(newBlockedCells);
   };
+  
 
   const sendNetworkDataToAPI = async () => {
+    if (
+      isNaN(numRange5) || 
+      isNaN(numRange3) || 
+      numRange5 < 0 || 
+      numRange3 < 0
+    ) {
+      notify(
+        "Invalid input: Number of routers must be non-negative numbers."      );
+      return;
+    }
+  
+    if (numRange5 === 0 && numRange3 === 0) {
+      notify(
+        "Invalid input: At least one router (5 GHz or 2.4 GHz) must be specified."
+      );
+      return;
+    }
+  
     const routerRanges = [
       ...Array(numRange5).fill(5),
       ...Array(numRange3).fill(3),
     ];
-
+  
     const requestData = {
       grid_size: n,
       router_ranges: routerRanges,
       walls: blockedCells,
       num_routers: routerRanges.length,
     };
-
+  
     console.log("Sending data to API:", requestData);
-
+  
     try {
       setLoading(true);
-      
+  
       const response = await fetch("http://localhost:7000/router-placement", {
         method: "POST",
         headers: {
@@ -125,20 +147,20 @@ const NetworkCoverageProblem = () => {
         },
         body: JSON.stringify(requestData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         console.log("Response received:", data);
         setNetworkGrid(data.grid);
         console.log("Total Coverage:", data.total_coverage);
       } else {
         console.error("Error from API:", data);
-        notify("An error occurred while fetching the data.", "error");
+        notify("An error occurred while fetching the data.");
       }
     } catch (error) {
       console.error("Request failed:", error);
-      notify("Failed to connect to the server.", "error");
+      notify("Your Situation is too complex for a Free Gurobi liscence");
     } finally {
       setLoading(false);
     }
@@ -157,10 +179,23 @@ const NetworkCoverageProblem = () => {
     return { backgroundColor: "lightgray" };
   };
 
+  const resetGrid = () => {
+    setNetworkGrid(
+      Array.from({ length: n }, () => Array(n).fill("-"))
+    );
+    setNumRange5(0); 
+    setNumRange3(0); 
+    setBlockedCells([]); 
+    setLoading(false); 
+  };
+
   return (
     <div className="cont-container">
       <div className="main d-flex flex-row gap-5 justify-content-center">
-        <div className="d-flex align-items-center flex-column gap-3" style={{ width: "400px" }}>
+        <div
+          className="d-flex align-items-center flex-column gap-3"
+          style={{ width: "400px" }}
+        >
           <Select
             options={options}
             value={options.find((option) => option.value === n)}
@@ -170,7 +205,12 @@ const NetworkCoverageProblem = () => {
             styles={selectStyles}
           />
           <div className="d-flex flex-column align-items-center gap-3 mt-3">
-            <div className="text-start ms-1 fw-bold text-secondary mt-0 ms-2" style={{width:'300px'}}>Number of 5 GHz Routers :</div>
+            <div
+              className="text-start ms-1 fw-bold text-secondary mt-0 ms-2"
+              style={{ width: "300px" }}
+            >
+              Number of 5 GHz Routers :
+            </div>
             <input
               type="number"
               className="form-control"
@@ -180,8 +220,12 @@ const NetworkCoverageProblem = () => {
               style={{ width: "300px" }}
             />
 
-
-            <div className="text-start ms-1 fw-bold text-secondary mt-3 ms-2" style={{width:'300px'}}>Number of 2.4 GHz Routers :</div>
+            <div
+              className="text-start ms-1 fw-bold text-secondary mt-3 ms-2"
+              style={{ width: "300px" }}
+            >
+              Number of 2.4 GHz Routers :
+            </div>
             <input
               type="number"
               className="form-control"
@@ -191,13 +235,23 @@ const NetworkCoverageProblem = () => {
               style={{ width: "300px" }}
             />
           </div>
-          <div className="d-flex justify-content-center mt-4">
+          <div className="d-flex justify-content-center mt-4 gap-3">
+            <span>
+              <button
+                className="pol-btn btn bg-success rounded-circle p-0 flex-grow-0"
+                onClick={resetGrid}
+              >
+                <ReplayIcon />
+              </button>
+            </span>
+
             <button
               onClick={sendNetworkDataToAPI}
               className="pol-btn btn bg-success fs-6 fw-bold rounded-4 flex-grow-1"
             >
               Place Routers
             </button>
+
           </div>
         </div>
 
