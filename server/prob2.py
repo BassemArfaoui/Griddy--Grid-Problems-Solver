@@ -23,47 +23,37 @@ class PolynomialRequest(BaseModel):
     degree: int
 
 def fit_and_plot_polynomial(data_points, degree, x_range=None, num_points=100):
-    # Unpack x and y data points
     x_data, y_data = zip(*data_points)
 
-    # Set custom x_range if not provided (between -35 and 35)
     if x_range is None:
         x_range = (-35, 35)
 
-    # Create the optimization model
     model = gp.Model("polynomial_approximation")
 
     coefficients = model.addVars(degree + 1, name="coefficients")
 
     errors = model.addVars(len(data_points), name="errors", vtype=GRB.CONTINUOUS)
 
-    # Create constraints for fitting polynomial to the data points
     for i, (x, y) in enumerate(data_points):
         y_approx = gp.LinExpr()
         for j in range(degree + 1):
             y_approx += coefficients[j] * (x ** (degree - j))
 
-        # Error constraints for the polynomial approximation
         model.addConstr(errors[i] >= y - y_approx)
         model.addConstr(errors[i] >= y_approx - y)
 
-    # Minimize the error
     model.setObjective(gp.quicksum(errors[i] for i in range(len(data_points))), GRB.MINIMIZE)
 
     model.optimize()
 
     if model.status == GRB.OPTIMAL:
-        # Extract coefficients
         coeffs = [coefficients[j].X for j in range(degree + 1)]
 
-        # Generate the equation of the polynomial
         equation = "y = " + " + ".join([f"{coeffs[j]:.2f}x^{degree-j}" for j in range(degree)]) + f" + {coeffs[-1]:.2f}"
 
-        # Generate the polynomial plot from first to last point
-        x_values = np.linspace(x_data[0], x_data[-1], num_points)  # Plot only between first and last x values
-        y_values = np.polyval(coeffs, x_values)  # Calculate corresponding y values
+        x_values = np.linspace(x_data[0], x_data[-1], num_points) 
+        y_values = np.polyval(coeffs, x_values) 
 
-        # Create the plot
         plt.figure(figsize=(10, 6))
         plt.plot(x_values, y_values, label=f'Polynomial degree {degree}', color='blue')
         plt.title(f'Polynomial Function of Degree {degree}')
@@ -72,11 +62,9 @@ def fit_and_plot_polynomial(data_points, degree, x_range=None, num_points=100):
         plt.grid(True)
         plt.legend()
 
-        # Set the axis limits
-        plt.xlim(-35, 35)  # x-axis from -35 to 35
-        plt.ylim(-12, 12)  # y-axis from -12 to 12
+        plt.xlim(-35, 35)  
+        plt.ylim(-12, 12) 
 
-        # Save the plot to a buffer and encode it to base64
         img_buf = BytesIO()
         plt.savefig(img_buf, format='png')
         img_buf.seek(0)

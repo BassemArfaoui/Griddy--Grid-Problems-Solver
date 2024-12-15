@@ -132,8 +132,8 @@ const ShortestPath = () => {
   }, [button, n]);
 
   return (
-    <div className="cont-container">
-      <div className="main">
+    <div className="cont-container pt-5">
+      <div className="main mt-4">
         <div className="d-flex align-content-center gap-3">
           <Select
             options={options}
