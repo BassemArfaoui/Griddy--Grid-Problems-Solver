@@ -22,11 +22,9 @@ class PolynomialRequest(BaseModel):
     data_points: list
     degree: int
 
-def fit_and_plot_polynomial(data_points, degree, x_range=None, num_points=100):
+def fit_and_plot_polynomial(data_points, degree, num_points=100):
     x_data, y_data = zip(*data_points)
 
-    if x_range is None:
-        x_range = (-35, 35)
 
     model = gp.Model("polynomial_approximation")
 
