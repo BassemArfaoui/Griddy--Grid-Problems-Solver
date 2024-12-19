@@ -4,6 +4,8 @@ import { PiChartScatterBold } from "react-icons/pi";
 import WifiIcon from '@mui/icons-material/Wifi';
 import './styles/Menu.css'
 import { useNavigate } from 'react-router-dom';
+import { PiSpinnerBold } from "react-icons/pi";
+
 
 
 
@@ -71,6 +73,21 @@ function ProblemsMenu(props) {
           <div className="w-100">
             <p className="mb-0 fw-bold fs-4 ms-3 text-dark" onClick={openProb3}>
               Network Coverage
+            </p>
+          </div>
+        </div> 
+
+
+        <div className="problem d-flex align-items-center justify-content-center gap-3 mb-2">
+          <div
+            className="noti-btn bg-secondary text-light rounded-circle d-flex align-items-center justify-content-center px-2"
+            style={{ width: "40px", height: "40px" }}
+          >
+            <PiSpinnerBold style={{fontSize : '100px'}} />
+          </div>      
+          <div className="w-100">
+            <p className="mb-0 fw-bold fs-4 ms-3 text-secondary"  >
+              Coming Soon ...
             </p>
           </div>
         </div> 

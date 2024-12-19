@@ -3,17 +3,22 @@ const path = require('path');
 
 let mainWindow;
 
+// Function to create the Electron window
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: true, // Allows Node.js integration if needed (not recommended for production)
+      contextIsolation: false, // To allow Node.js in renderer
     },
   });
 
-  // Load the React app from the build folder
-  mainWindow.loadURL(path.join('file://', __dirname, 'build', 'index.html'));
+  // Load React app from localhost:3000 in development mode
+  mainWindow.loadURL('http://localhost:3000');
+
+  // Open Developer Tools automatically
+  mainWindow.webContents.openDevTools();
 
   mainWindow.on('closed', () => {
     mainWindow = null;
